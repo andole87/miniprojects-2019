@@ -1,13 +1,12 @@
-const password = document.getElementById("password");
-const passwordConfirm = document.getElementById("passwordConfirm");
-
-const validatePassword = function() {
-    if (password.value !== passwordConfirm.value) {
-        passwordConfirm.setCustomValidity("패스워드가 서로 맞지 않습니다.");
-    } else {
-        passwordConfirm.setCustomValidity("");
+(function() {
+    const pwd = document.getElementById("password");
+    const pwdConfirm = document.getElementById("passwordConfirm");
+    const inputPasswordHandler = () => {
+        pwdConfirm.style.background = "#ffd5e3";
+        if (pwd.value === pwdConfirm.value) {
+            pwdConfirm.style.background = "white";
+        }
     }
-};
 
-password.oninput = validatePassword;
-passwordConfirm.oninput = validatePassword;
+    pwdConfirm.addEventListener('input', inputPasswordHandler);
+})();
