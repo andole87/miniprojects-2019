@@ -12,6 +12,6 @@
                     window.location.href = baseUrl;
                 }
             })
-        document.getElementById("post-edit-btn").addEventListener("click", onModifyClick);
     }
+    document.getElementById("post-edit-btn").addEventListener("click", onModifyClick);
 })();
