@@ -45,11 +45,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String modify(
-            @PathVariable Long id,
-            UserUpdateDto userUpdateDto,
-            UserSession userSession,
-            HttpSession session) {
+    public String modify(@PathVariable Long id,
+                         UserUpdateDto userUpdateDto,
+                         UserSession userSession,
+                         HttpSession session) {
 
         try {
             User user = userService.modify(id, userUpdateDto, userSession);
