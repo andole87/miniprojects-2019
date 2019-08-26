@@ -2,7 +2,6 @@ package com.woowacourse.zzinbros.comment;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -55,14 +54,6 @@ public abstract class AuthedWebTestClient extends BaseTest {
     protected WebTestClient.RequestHeadersSpec delete(String uri) {
         String cookie = loginCookie();
         return webTestClient.delete().uri(uri).header("Cookie", cookie);
-    }
-
-    protected <T> BodyInserters.FormInserter<String> params(Class<T> classType, String... parameters) {
-        BodyInserters.FormInserter<String> body = BodyInserters.fromFormData(Strings.EMPTY, Strings.EMPTY);
-        for (int i = 1; i < classType.getDeclaredFields().length; i++) {
-            body.with(classType.getDeclaredFields()[i].getName(), parameters[i - 1]);
-        }
-        return body;
     }
 
     protected WebTestClient.RequestHeadersSpec multipartFilePost(String uri, List<String> keys, Object... parameters) {
