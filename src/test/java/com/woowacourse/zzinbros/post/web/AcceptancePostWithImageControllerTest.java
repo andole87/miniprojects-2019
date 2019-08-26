@@ -6,7 +6,7 @@ import org.springframework.core.io.ByteArrayResource;
 
 import java.util.Arrays;
 
-class PostWithImageControllerTest extends AuthedWebTestClient {
+class AcceptancePostWithImageControllerTest extends AuthedWebTestClient {
 
     private ByteArrayResource testResource = new ByteArrayResource(new byte[]{1, 2, 3}) {
         @Override
