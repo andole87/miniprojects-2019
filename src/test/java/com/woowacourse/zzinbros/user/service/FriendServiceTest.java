@@ -20,20 +20,19 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class FriendServiceTest extends UserBaseTest {
 
-    @MockBean
-    private FriendRepository friendRepository;
-
-    @Autowired
-    private FriendService friendService;
-
     User me;
     User other;
+    @MockBean
+    private FriendRepository friendRepository;
+    @Autowired
+    private FriendService friendService;
 
     @BeforeEach
     void setUp() {
@@ -44,12 +43,13 @@ class FriendServiceTest extends UserBaseTest {
     @Test
     void requestSuccessTest() {
         Friend friend = Friend.of(me, other);
-        given(friendRepository.save(friend)).willReturn(friend);
+        given(friendRepository.save(any(Friend.class))).willReturn(friend);
         given(friendRepository.existsByFromAndTo(me, other)).willReturn(false);
 
         Friend actual = friendService.sendFriendRequest(me, other);
 
-        assertEquals(friend, actual);
+        assertEquals(friend.getFrom().getEmail(), actual.getFrom().getEmail());
+        assertEquals(friend.getTo().getEmail(), actual.getTo().getEmail());
     }
 
 

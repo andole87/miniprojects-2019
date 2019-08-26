@@ -1,13 +1,10 @@
 package com.woowacourse.zzinbros.user.domain;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Table(
         uniqueConstraints = @UniqueConstraint(columnNames = {"from_id", "to_id"})
@@ -56,19 +53,5 @@ public class Friend implements Serializable {
 
     public User getTo() {
         return to;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Friend)) return false;
-        Friend friend = (Friend) o;
-        return Objects.equals(to, friend.to) &&
-                Objects.equals(from, friend.from);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(to, from);
     }
 }

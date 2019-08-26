@@ -49,7 +49,7 @@ public class Post extends BaseEntity {
     }
 
     public boolean matchAuthor(User user) {
-        return this.author.equals(user);
+        return this.author.isAuthor(user);
     }
 
     public void addMediaFiles(MediaFile mediaFile) {
@@ -100,18 +100,5 @@ public class Post extends BaseEntity {
 
     public int getCountOfLike() {
         return countOfLike;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
