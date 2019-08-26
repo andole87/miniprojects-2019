@@ -35,7 +35,7 @@ public class PostControllerTest extends BaseTest {
     private static final long DEFAULT_POST_ID = 999L;
     private static final String POST_URL = "/posts/";
     @InjectMocks
-    PostController postController;
+    private PostController postController;
     @Mock
     PostService postService;
     private Post defaultPost;
