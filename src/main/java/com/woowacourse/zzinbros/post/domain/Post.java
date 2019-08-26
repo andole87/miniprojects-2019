@@ -29,7 +29,7 @@ public class Post extends BaseEntity {
     private Set<PostLike> postLikes = new HashSet<>();
 
     @Column
-    private int countOfLike;
+    private Integer countOfLike;
 
     public Post() {
     }
@@ -37,7 +37,7 @@ public class Post extends BaseEntity {
     public Post(String contents, User author) {
         this.contents = contents;
         this.author = author;
-        countOfLike = 0;
+        this.countOfLike = 0;
     }
 
     public Post update(Post post) {
