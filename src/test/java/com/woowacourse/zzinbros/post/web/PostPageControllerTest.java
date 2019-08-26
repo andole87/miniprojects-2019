@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostPageControllerTest extends BaseTest {
 
     private static final Long BASE_ID = 1L;
+    private static final Sort sort = Sort.by(Sort.Direction.DESC,"createdDateTime");
 
     MockMvc mockMvc;
 
@@ -73,9 +75,10 @@ class PostPageControllerTest extends BaseTest {
                 new UserResponseDto(1L, "이름", "2@mail.com"),
                 new UserResponseDto(2L, "이름2", "3@mail.com")
         ));
+
         given(userService.findUserById(BASE_ID)).willReturn(baseUser);
-        given(postService.readAllByUser(baseUser)).willReturn(posts);
-        given(friendService.findFriendByUser(baseUser)).willReturn(friends);
+        given(postService.readAllByUser(baseUser, sort)).willReturn(posts);
+        given(friendService.findFriendByUser(BASE_ID)).willReturn(friends);
 
         mockMvc.perform(get("/posts?author=" + BASE_ID))
                 .andExpect(status().isOk());

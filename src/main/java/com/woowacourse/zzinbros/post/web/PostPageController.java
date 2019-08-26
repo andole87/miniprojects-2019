@@ -7,6 +7,7 @@ import com.woowacourse.zzinbros.user.dto.UserResponseDto;
 import com.woowacourse.zzinbros.user.exception.UserNotFoundException;
 import com.woowacourse.zzinbros.user.service.FriendService;
 import com.woowacourse.zzinbros.user.service.UserService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,9 @@ public class PostPageController {
     public String showPage(@RequestParam("author") final Long id, Model model) {
         try {
             User author = userService.findUserById(id);
-            List<Post> posts = postService.readAllByUser(author);
-            Set<UserResponseDto> friends = friendService.findFriendByUser(author);
+            Sort sort = Sort.by(Sort.Direction.DESC, "createdDateTime");
+            List<Post> posts = postService.readAllByUser(author, sort);
+            Set<UserResponseDto> friends = friendService.findFriendByUser(id);
             model.addAttribute("author", author);
             model.addAttribute("posts", posts);
             model.addAttribute("friends", friends);
