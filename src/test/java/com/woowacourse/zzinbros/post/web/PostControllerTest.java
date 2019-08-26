@@ -37,7 +37,7 @@ public class PostControllerTest extends BaseTest {
     @InjectMocks
     private PostController postController;
     @Mock
-    PostService postService;
+    private PostService postService;
     private Post defaultPost;
     private User defaultUser;
     private UserResponseDto loginUserDto;
