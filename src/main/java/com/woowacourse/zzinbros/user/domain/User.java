@@ -1,10 +1,12 @@
 package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
+import com.woowacourse.zzinbros.mediafile.MediaFile;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +18,7 @@ public class User extends BaseEntity {
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 30;
     private static final String EMAIL_PATTERN = "^.+@.+$";
+    private static final String DEFAULT_PROFILE_URL = "/images/default/eastjun_profile.jpg";
 
     @Column(name = "name", length = 20, nullable = false)
     private String name;
@@ -27,6 +30,11 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "fk_user_to_media_file"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private MediaFile profile;
+
     public User() {
     }
 
@@ -34,10 +42,19 @@ public class User extends BaseEntity {
         validateLength(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
         validateLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
         validatePattern(email, EMAIL_PATTERN);
-
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String name, @Email String email, String password, MediaFile profile) {
+        validateLength(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+        validateLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+        validatePattern(email, EMAIL_PATTERN);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.profile = profile;
     }
 
     private void validateLength(String name, int minNameLength, int maxNameLength) {
@@ -67,6 +84,7 @@ public class User extends BaseEntity {
         this.name = updatedUser.name;
         this.email = updatedUser.email;
         this.password = updatedUser.password;
+        this.profile = updatedUser.profile;
     }
 
     public boolean matchPassword(String password) {
@@ -92,5 +110,9 @@ public class User extends BaseEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public MediaFile getProfile() {
+        return profile;
     }
 }
