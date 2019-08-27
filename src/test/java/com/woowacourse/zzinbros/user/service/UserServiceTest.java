@@ -1,6 +1,8 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.BaseTest;
+import com.woowacourse.zzinbros.common.config.upload.UploadTo;
+import com.woowacourse.zzinbros.common.config.upload.UploadToLocal;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.UserTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
@@ -32,6 +34,7 @@ class UserServiceTest extends BaseTest {
 
     private static final long BASE_ID = 1L;
     private static final String MISMATCH_EMAIL = "error@test.com";
+    private static final UploadTo DEFAULT_PROFILE = new UploadToLocal(null, "down", "up");
 
     @Mock
     UserRepository userRepository;
@@ -68,7 +71,7 @@ class UserServiceTest extends BaseTest {
         given(userRepository.existsUserByEmail(user.getEmail())).willReturn(false);
         given(userRepository.save(user)).willReturn(user);
 
-        User savedUser = userService.register(userRequestDto);
+        User savedUser = userService.register(userRequestDto, DEFAULT_PROFILE);
         verify(userRepository, times(1)).save(savedUser);
     }
 
@@ -77,7 +80,7 @@ class UserServiceTest extends BaseTest {
     void failAddUserWhenUserExists() {
         given(userRepository.existsUserByEmail(user.getEmail())).willReturn(true);
         assertThatThrownBy(() ->
-                userService.register(userRequestDto)).isInstanceOf(EmailAlreadyExistsException.class);
+                userService.register(userRequestDto, DEFAULT_PROFILE)).isInstanceOf(EmailAlreadyExistsException.class);
     }
 
     @Test
@@ -86,7 +89,7 @@ class UserServiceTest extends BaseTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(validLoginUserDto.getEmail())).willReturn(Optional.ofNullable(user));
 
-        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto);
+        User updatedUser = userService.modify(BASE_ID, userUpdateDto, validLoginUserDto, DEFAULT_PROFILE);
         assertThat(updatedUser).isEqualTo(user);
     }
 
@@ -96,7 +99,7 @@ class UserServiceTest extends BaseTest {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(user));
         given(userRepository.findByEmail(notValidLoginUserDto.getEmail())).willReturn(Optional.ofNullable(notValidUser));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto, DEFAULT_PROFILE))
                 .isInstanceOf(NotValidUserException.class);
     }
 
@@ -105,7 +108,7 @@ class UserServiceTest extends BaseTest {
     void updateUserWhenUserNotExist() {
         given(userRepository.findById(BASE_ID)).willReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto))
+        assertThatThrownBy(() -> userService.modify(BASE_ID, userUpdateDto, notValidLoginUserDto, DEFAULT_PROFILE))
                 .isInstanceOf(UserNotFoundException.class);
     }
 

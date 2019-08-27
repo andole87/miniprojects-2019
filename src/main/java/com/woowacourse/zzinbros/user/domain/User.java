@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.user.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
-import com.woowacourse.zzinbros.mediafile.MediaFile;
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.user.exception.IllegalUserArgumentException;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

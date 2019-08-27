@@ -2,7 +2,7 @@ spring:
   config.name: local
   jpa:
     database: mysql
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:

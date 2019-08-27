@@ -29,7 +29,7 @@ public class UploadToS3 extends AbstractUploadTo {
     @Override
     public String save() {
         if (file == null) {
-            return "/images/default/eastjun_profile.jpg";
+            return null;
         }
         String keyName = hashFileName() + getExtension();
         File localFile = convertMultiPartToFile(file);

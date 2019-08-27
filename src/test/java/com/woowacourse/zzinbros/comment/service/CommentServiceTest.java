@@ -4,6 +4,8 @@ import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.comment.domain.Comment;
 import com.woowacourse.zzinbros.comment.exception.CommentNotFoundException;
 import com.woowacourse.zzinbros.comment.exception.UnauthorizedException;
+import com.woowacourse.zzinbros.common.config.upload.UploadTo;
+import com.woowacourse.zzinbros.common.config.upload.UploadToLocal;
 import com.woowacourse.zzinbros.post.domain.Post;
 import com.woowacourse.zzinbros.post.dto.PostRequestDto;
 import com.woowacourse.zzinbros.post.service.PostService;
@@ -30,6 +32,7 @@ class CommentServiceTest extends BaseTest {
     private static String POST_CONTENTS = "post contents";
     private static String COMMENT_CONTENTS = "comment contents";
     private static String NEW_CONTENTS = "new contents";
+    private static UploadTo DEFAULT_PROFILE = new UploadToLocal(null, "upload", "download");
 
     private User user;
     private User wrongUser;
@@ -47,8 +50,8 @@ class CommentServiceTest extends BaseTest {
 
     @BeforeAll
     void setUp() {
-        user = userService.register(new UserRequestDto(USER_NAME, USER_EMAIL, USER_PASSWORD));
-        wrongUser = userService.register(new UserRequestDto("wrong", "not@mail.net", "123456789"));
+        user = userService.register(new UserRequestDto(USER_NAME, USER_EMAIL, USER_PASSWORD), DEFAULT_PROFILE);
+        wrongUser = userService.register(new UserRequestDto("wrong", "not@mail.net", "123456789"), DEFAULT_PROFILE);
         final PostRequestDto postRequestDto = new PostRequestDto();
         postRequestDto.setContents(POST_CONTENTS);
         post = postService.add(postRequestDto, user.getId());

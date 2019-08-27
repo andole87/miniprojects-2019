@@ -1,8 +1,8 @@
 package com.woowacourse.zzinbros.user.service;
 
 import com.woowacourse.zzinbros.common.config.upload.UploadTo;
-import com.woowacourse.zzinbros.mediafile.MediaFile;
-import com.woowacourse.zzinbros.mediafile.MediaFileRepository;
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
+import com.woowacourse.zzinbros.mediafile.service.MediaFileService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -19,17 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-    private final MediaFileRepository mediaFileRepository;
+    private final MediaFileService mediaFileService;
 
-    public UserService(UserRepository userRepository, MediaFileRepository mediaFileRepository) {
+    public UserService(UserRepository userRepository, MediaFileService mediaFileService) {
         this.userRepository = userRepository;
-        this.mediaFileRepository = mediaFileRepository;
+        this.mediaFileService = mediaFileService;
     }
 
     public User register(UserRequestDto userRequestDto, UploadTo uploadTo) {
         final String email = userRequestDto.getEmail();
         if (!userRepository.existsUserByEmail(email)) {
-            MediaFile mediaFile = mediaFileRepository.save(new MediaFile(uploadTo.save()));
+            MediaFile mediaFile = mediaFileService.register(uploadTo);
             return userRepository.save(userRequestDto.toEntity(mediaFile));
         }
         throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
@@ -42,7 +42,7 @@ public class UserService {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(loginUserDto.getEmail());
         if (loggedInUser.isAuthor(user)) {
-            MediaFile mediaFile = mediaFileRepository.save(new MediaFile(uploadTo.save()));
+            MediaFile mediaFile = mediaFileService.register(uploadTo);
             user.update(userUpdateDto.toEntity(loggedInUser.getPassword(), mediaFile));
             return user;
         }
