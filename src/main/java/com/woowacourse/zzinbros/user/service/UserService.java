@@ -1,5 +1,8 @@
 package com.woowacourse.zzinbros.user.service;
 
+import com.woowacourse.zzinbros.common.config.upload.UploadTo;
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
+import com.woowacourse.zzinbros.mediafile.service.MediaFileService;
 import com.woowacourse.zzinbros.user.domain.User;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;
 import com.woowacourse.zzinbros.user.dto.UserRequestDto;
@@ -16,24 +19,31 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final MediaFileService mediaFileService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, MediaFileService mediaFileService) {
         this.userRepository = userRepository;
+        this.mediaFileService = mediaFileService;
     }
 
-    public User register(UserRequestDto userRequestDto) {
+    public User register(UserRequestDto userRequestDto, UploadTo uploadTo) {
         final String email = userRequestDto.getEmail();
         if (!userRepository.existsUserByEmail(email)) {
-            return userRepository.save(userRequestDto.toEntity());
+            MediaFile mediaFile = mediaFileService.register(uploadTo);
+            return userRepository.save(userRequestDto.toEntity(mediaFile));
         }
         throw new EmailAlreadyExistsException("중복된 이메일이 존재합니다");
     }
 
-    public User modify(Long id, UserUpdateDto userUpdateDto, UserResponseDto loginUserDto) {
+    public User modify(long id,
+                       UserUpdateDto userUpdateDto,
+                       UserResponseDto loginUserDto,
+                       UploadTo uploadTo) {
         User user = findUser(id);
         User loggedInUser = findUserByEmail(loginUserDto.getEmail());
         if (loggedInUser.isAuthor(user)) {
-            user.update(userUpdateDto.toEntity(loggedInUser.getPassword()));
+            MediaFile mediaFile = mediaFileService.register(uploadTo);
+            user.update(userUpdateDto.toEntity(loggedInUser.getPassword(), mediaFile));
             return user;
         }
         throw new NotValidUserException("수정할 수 없는 이용자입니다");
