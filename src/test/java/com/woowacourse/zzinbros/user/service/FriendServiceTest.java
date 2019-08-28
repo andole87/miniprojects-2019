@@ -62,7 +62,7 @@ class FriendServiceTest extends UserBaseTest {
     @DisplayName("친구 요청을 제대로 수행하는지")
     void sendFriendRequest() {
         given(friendRequestRepository.existsBySenderAndReceiver(any(User.class), any(User.class))).willReturn(false);
-        friendService.sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
+        friendService.registerFriend(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
         verify(friendRequestRepository, times(1)).save(any(FriendRequest.class));
     }
 

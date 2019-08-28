@@ -33,7 +33,7 @@ public class FriendController {
     public String requestFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
         final UserResponseDto loginUserDto = userSession.getDto();
         if (!userSession.matchId(friendRequestDto.getRequestFriendId())) {
-            friendService.sendFriendRequest(loginUserDto, friendRequestDto);
+            friendService.registerFriend(loginUserDto, friendRequestDto);
         }
         return "redirect:/posts?author=" + friendRequestDto.getRequestFriendId();
     }

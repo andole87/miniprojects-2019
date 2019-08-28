@@ -7,7 +7,6 @@ import com.woowacourse.zzinbros.user.domain.repository.FriendRepository;
 import com.woowacourse.zzinbros.user.domain.repository.FriendRequestRepository;
 import com.woowacourse.zzinbros.user.dto.FriendRequestDto;
 import com.woowacourse.zzinbros.user.dto.UserResponseDto;
-import com.woowacourse.zzinbros.user.exception.AlreadyFriendRequestExist;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +29,28 @@ public class FriendService {
         this.userService = userService;
     }
 
-    public boolean sendFriendRequest(final UserResponseDto requestUser, final FriendRequestDto friendRequested) {
+    public boolean registerFriend(final UserResponseDto requestUser, final FriendRequestDto friendRequested) {
         User sender = userService.findUserById(requestUser.getId());
         User receiver = userService.findUserById(friendRequested.getRequestFriendId());
-        if (!friendRequestRepository.existsBySenderAndReceiver(sender, receiver)) {
-            friendRequestRepository.save(new FriendRequest(sender, receiver));
+        if (friendRequestRepository.existsBySenderAndReceiver(sender, receiver)) {
+            return false;
+        }
+        return sendFriendRequest(sender, receiver);
+    }
+
+    private boolean sendFriendRequest(User sender, User receiver) {
+        if (friendRequestRepository.existsBySenderAndReceiver(receiver, sender)) {
+            friendRequestRepository.deleteBySenderAndReceiver(sender, receiver);
+            registerFriend(sender, receiver);
             return true;
         }
-        throw new AlreadyFriendRequestExist("Already Friend Request");
+        friendRequestRepository.save(new FriendRequest(sender, receiver));
+        return true;
+    }
+
+    private void registerFriend(User sender, User receiver) {
+        friendRepository.save(new Friend(sender, receiver));
+        friendRepository.save(new Friend(receiver, sender));
     }
 
     public Set<UserResponseDto> findFriendsByUser(final long id) {

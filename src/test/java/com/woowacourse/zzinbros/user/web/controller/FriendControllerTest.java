@@ -62,7 +62,7 @@ class FriendControllerTest extends UserBaseTest {
     @Test
     @DisplayName("친구 추가 Post 요청을 제대로 수행하는지 Test")
     void friendPostSuccessTest() throws Exception {
-        given(friendService.sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO)).willReturn(true);
+        given(friendService.registerFriend(LOGIN_USER_DTO, FRIEND_REQUEST_DTO)).willReturn(true);
 
         mockMvc.perform(post("/friends")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -70,7 +70,7 @@ class FriendControllerTest extends UserBaseTest {
                 .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
                 .andExpect(status().isFound());
 
-        verify(friendService, times(1)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
+        verify(friendService, times(1)).registerFriend(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
     }
 
     @Test
@@ -84,7 +84,7 @@ class FriendControllerTest extends UserBaseTest {
                 .sessionAttr(UserSession.LOGIN_USER, LOGIN_USER_DTO))
                 .andExpect(status().isFound());
 
-        verify(friendService, times(0)).sendFriendRequest(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
+        verify(friendService, times(0)).registerFriend(LOGIN_USER_DTO, FRIEND_REQUEST_DTO);
     }
 
     @Test
