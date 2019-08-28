@@ -94,8 +94,8 @@ class FriendControllerTest extends UserBaseTest {
         User first = userSampleOf(SAMPLE_TWO);
         User second = userSampleOf(SAMPLE_THREE);
 
-        Friend friend2 = mockingId(Friend.of(second, me), 2L);
-        Friend friend3 = mockingId(Friend.of(first, me), 3L);
+        Friend friend2 = mockingId(new Friend(second, me), 2L);
+        Friend friend3 = mockingId(new Friend(first, me), 3L);
 
         Set<Friend> friends = new HashSet<>(Arrays.asList(
                 friend2,

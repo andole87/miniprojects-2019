@@ -27,9 +27,10 @@ public class FriendController {
         Set<UserResponseDto> users = friendService.findFriendRequestsByUser(session.getDto());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public String addFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
+    public String requestFriend(@RequestBody FriendRequestDto friendRequestDto, @SessionInfo UserSession userSession) {
         final UserResponseDto loginUserDto = userSession.getDto();
         if (!userSession.matchId(friendRequestDto.getRequestFriendId())) {
             friendService.sendFriendRequest(loginUserDto, friendRequestDto);
