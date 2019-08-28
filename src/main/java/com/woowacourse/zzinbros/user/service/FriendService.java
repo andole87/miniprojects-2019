@@ -40,7 +40,7 @@ public class FriendService {
 
     private boolean sendFriendRequest(User sender, User receiver) {
         if (friendRequestRepository.existsBySenderAndReceiver(receiver, sender)) {
-            friendRequestRepository.deleteBySenderAndReceiver(sender, receiver);
+            friendRequestRepository.deleteBySenderAndReceiver(receiver, sender);
             registerFriend(sender, receiver);
             return true;
         }
@@ -66,6 +66,18 @@ public class FriendService {
         User owner = userService.findUserById(id);
         return friendRequestToUserResponseDto(friendRequestRepository.findAllByReceiver(owner));
 
+    }
+
+    public boolean isMyFriend(final long ownerId, final long slaveId) {
+        User owner = userService.findUserById(ownerId);
+        User slave = userService.findUserById(slaveId);
+        return friendRepository.existsByOwnerAndSlave(owner, slave);
+    }
+
+    public boolean readyToBeMyFriend(final long senderId, final long receiverId) {
+        User sender = userService.findUserById(senderId);
+        User receiver = userService.findUserById(receiverId);
+        return friendRequestRepository.existsBySenderAndReceiver(sender, receiver);
     }
 
     public Set<UserResponseDto> friendToUserResponseDto(Set<Friend> friends) {
