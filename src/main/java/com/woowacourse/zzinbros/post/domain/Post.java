@@ -1,7 +1,7 @@
 package com.woowacourse.zzinbros.post.domain;
 
 import com.woowacourse.zzinbros.common.domain.BaseEntity;
-import com.woowacourse.zzinbros.mediafile.MediaFile;
+import com.woowacourse.zzinbros.mediafile.domain.MediaFile;
 import com.woowacourse.zzinbros.post.exception.UnAuthorizedException;
 import com.woowacourse.zzinbros.user.domain.User;
 import org.hibernate.annotations.ColumnDefault;

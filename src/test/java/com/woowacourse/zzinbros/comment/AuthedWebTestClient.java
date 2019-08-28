@@ -67,4 +67,16 @@ public abstract class AuthedWebTestClient extends BaseTest {
                 .header("Cookie", cookie)
                 .syncBody(bodyBuilder.build());
     }
+
+    protected WebTestClient.RequestHeadersSpec multipartFilePut(String uri, List<String> keys, Object... parameters) {
+        MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+        for (int i = 0; i < keys.size(); i++) {
+            bodyBuilder.part(keys.get(i), parameters[i]);
+        }
+        String cookie = loginCookie();
+        webTestClient = webTestClient.mutate().responseTimeout(Duration.ofSeconds(10)).build();
+        return webTestClient.put().uri(uri)
+                .header("Cookie", cookie)
+                .syncBody(bodyBuilder.build());
+    }
 }
