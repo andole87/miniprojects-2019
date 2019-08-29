@@ -1,6 +1,7 @@
 <div class="col-lg-7 col-md-7 col-sm-7 mrg-top-120">
     <h1 class="border bottom width-100 pdd-btm-5 text-bold text-center">새 계정 만들기</h1>
-    <form accept-charset="UTF-8" action="/users" class="form-horizontal pdd-right-30 align-items-center" enctype="multipart/form-data"
+    <form accept-charset="UTF-8" action="/users" class="form-horizontal pdd-right-30 align-items-center"
+          enctype="multipart/form-data"
           id="signup" method="post">
         <div class="form-group row">
             <label class="col-md-3 control-label text-right" for="name">이름</label>
@@ -34,8 +35,9 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-md-3 control-label text-right" for="user-profile">프로필 이미지</label>
             <div class="col-md-9">
-                <input class="form-control" name="profile" type="file">
+                <input class="form-control" id="user-profile" name="profile" type="file">
             </div>
         </div>
         <div class="form-group text-right">
