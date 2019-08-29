@@ -6,3 +6,13 @@ zzinbros:
 spring:
     profiles:
         active: local
+
+    security:
+        oauth2:
+            client:
+                registration:
+                    facebook:
+                        client-id: 2322293111222716
+                        client-secret: 4530f29c0d106f6894ea781b75a2b92c
+
+    social.auths: facebook
