@@ -79,7 +79,7 @@ public class UserService {
         User user = findUserByEmail(userRequestDto.getEmail());
 
         if (user.matchPassword(userRequestDto.getPassword())) {
-            return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
+            return new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getProfile().getUrl());
         }
         throw new UserLoginException("비밀번호가 다릅니다");
     }
@@ -87,7 +87,7 @@ public class UserService {
     public List<UserResponseDto> readAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
+                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getProfile().getUrl()))
                 .collect(Collectors.toList());
     }
 

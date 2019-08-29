@@ -1,4 +1,4 @@
-package com.woowacourse.zzinbros.comment;
+package com.woowacourse.zzinbros.common.domain;
 
 import com.woowacourse.zzinbros.BaseTest;
 import com.woowacourse.zzinbros.user.domain.repository.UserRepository;

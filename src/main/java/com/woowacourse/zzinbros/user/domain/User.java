@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false, length = MAX_PASSWORD_LENGTH)
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "media_file_id", foreignKey = @ForeignKey(name = "fk_user_to_media_file"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MediaFile profile;
@@ -38,12 +38,7 @@ public class User extends BaseEntity {
     }
 
     public User(String name, @Email String email, String password) {
-        validateLength(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
-        validateLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
-        validatePattern(email, EMAIL_PATTERN);
-        this.name = name;
-        this.email = email;
-        this.password = password;
+        this(name, email, password, new MediaFile("/images/default/eastjun_profile.jpg"));
     }
 
     public User(String name, @Email String email, String password, MediaFile profile) {

@@ -38,7 +38,6 @@ class UserServiceTest extends BaseTest {
     private static final long BASE_ID = 1L;
     private static final String MISMATCH_EMAIL = "error@test.com";
 
-
     @Mock
     MediaFileService mediaFileService;
 
@@ -67,10 +66,10 @@ class UserServiceTest extends BaseTest {
                 UserTest.BASE_NAME,
                 UserTest.BASE_EMAIL
         );
-        user = userRequestDto.toEntity();
+        user = userRequestDto.toEntity(mediaFile);
         notValidUser = new User(UserTest.BASE_NAME, MISMATCH_EMAIL, UserTest.BASE_PASSWORD);
-        validLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL);
-        notValidLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL);
+        validLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, UserTest.BASE_EMAIL, mediaFile.getUrl());
+        notValidLoginUserDto = new UserResponseDto(BASE_ID, UserTest.BASE_NAME, MISMATCH_EMAIL, mediaFile.getUrl());
     }
 
     @Test

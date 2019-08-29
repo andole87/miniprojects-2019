@@ -28,7 +28,7 @@ public class UploadToS3 extends AbstractUploadTo {
 
     @Override
     public String save() {
-        if (file == null) {
+        if (file == null || file.isEmpty()) {
             return null;
         }
         String keyName = hashFileName() + getExtension();
